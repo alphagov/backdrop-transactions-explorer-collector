@@ -2,7 +2,7 @@ import json
 import tempfile
 import unittest
 from mock import patch
-from collector.spreadsheet_to_json import spreadsheet_to_json
+from collector.spreadsheet_to_dictionary import spreadsheet_to_dictionary
 
 
 class TestJsonGeneratedFromSpreadsheet(unittest.TestCase):
@@ -17,16 +17,20 @@ class TestJsonGeneratedFromSpreadsheet(unittest.TestCase):
             }
         }
 
-    @patch("collector.spreadsheet_to_json.get_google_spreadsheet_data")
-    @patch("sys.stdout.write")
-    def test_something(self, mock_stdout, mock_spreadsheet_data):
+    @patch("collector.spreadsheet_to_dictionary.get_google_spreadsheet_data")
+    def test_it_returns_a_spreadsheet_as_a_dict(self, mock_spreadsheet_data):
+        # Write out a temporary config file somewhere on disk
         f = tempfile.NamedTemporaryFile(suffix=".json")
         f.write(json.dumps(self.config))
         f.flush()
 
         mock_spreadsheet_data.return_value = self.data
 
-        spreadsheet_to_json(("doc_name %s" % f.name).split())
+        processed_array = spreadsheet_to_dictionary(['doc_name', f.name])
 
-        mock_stdout.assert_called_with('[{"foo": 1, "bar": 2, "zap": 3}, '
-                                       '{"foo": 4, "bar": 5, "zap": 6}]')
+        expected_array = [
+            {'foo': 1, 'bar': 2, 'zap': 3},
+            {'foo': 4, 'bar': 5, 'zap': 6},
+        ]
+
+        self.assertEqual(processed_array, expected_array)

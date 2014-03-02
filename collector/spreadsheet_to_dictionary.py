@@ -37,7 +37,7 @@ def convert_to_records(data):
     return map(row_to_dict, rows)
 
 
-def spreadsheet_to_json(args):
+def spreadsheet_to_dictionary(args):
     arguments = parse_args(args)
     with open(arguments.config) as f:
         config = json.loads(f.read())
@@ -47,4 +47,4 @@ def spreadsheet_to_json(args):
                                                this_config['key'],
                                                this_config['worksheet'])
 
-        sys.stdout.write(json.dumps(convert_to_records(raw_data)))
+        return convert_to_records(raw_data)

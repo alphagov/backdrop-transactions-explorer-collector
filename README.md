@@ -9,7 +9,7 @@ Google Docs Spreadsheet to JSON converter, to be used with
 # Setup
 
 1. Get yourself a virtualenv (optional)
-2. `pip install -r requirements_for_tests.txt`
+2. `pip install --allow-external argparse -r requirements_for_tests.txt`
 
 # Running tests
 

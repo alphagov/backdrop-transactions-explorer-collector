@@ -12,11 +12,11 @@ def parse_args(args):
     return parser.parse_args(args)
 
 
-def get_google_spreadsheet_data(username, password, key):
+def get_google_spreadsheet_data(username, password, key, worksheet):
     google = gspread.login(username, password)
     spreadsheet = google.open_by_key(key)
 
-    return spreadsheet.sheet1.get_all_values()
+    return spreadsheet.worksheet(worksheet).get_all_values()
 
 
 def convert_to_records(data):
@@ -44,6 +44,7 @@ def spreadsheet_to_json(args):
         this_config = config[arguments.doc]
         raw_data = get_google_spreadsheet_data(this_config['username'],
                                                this_config['password'],
-                                               this_config['key'])
+                                               this_config['key'],
+                                               this_config['worksheet'])
 
         sys.stdout.write(json.dumps(convert_to_records(raw_data)))

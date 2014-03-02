@@ -12,7 +12,8 @@ class TestJsonGeneratedFromSpreadsheet(unittest.TestCase):
             "doc_name": {
                 "username": "_",
                 "password": "_",
-                "key": "_"
+                "key": "_",
+                "worksheet": "sheet1"
             }
         }
 

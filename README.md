@@ -32,7 +32,8 @@ Create a `config.json` file in this directory that looks a bit like:
   "the_document_i_want": {
     "username": "email@example.com",
     "password": "google-app-specific-password",
-    "key": "google-docs-spreadsheet-key"
+    "key": "google-docs-spreadsheet-key",
+    "worksheet": "worksheet_title_from_google_spreadsheet_footer"
   }
 }
 ```

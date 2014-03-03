@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/alphagov/backdrop-google-spreadsheet-collector.png?branch=master)](https://travis-ci.org/alphagov/backdrop-google-spreadsheet-collector)
-
 # Transactions Explorer collector for Backdrop
 
 This Python app takes Transactions Explorer data from a Google Spreadsheet

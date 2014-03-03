@@ -1,9 +1,0 @@
-#!/usr/bin/env python
-
-import json
-import sys
-from collector.spreadsheet_to_dictionary import spreadsheet_to_dictionary
-
-if __name__ == '__main__':
-    data = spreadsheet_to_dictionary(sys.argv[1:])
-    sys.stdout.write(json.dumps(data))

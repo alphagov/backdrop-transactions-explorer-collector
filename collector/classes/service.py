@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import string
 
 
@@ -18,6 +19,9 @@ class Service(object):
         service_title = self.service_title()
         dept = self.abbreviated_department()
         return sanitise_string(u'{0} {1} {2}'.format(self.numeric_id, dept, service_title))
+
+    def attribute_exists(self, key):
+        return key in self.detailed_data
 
     def get(self, key):
         return self.detailed_data[key]

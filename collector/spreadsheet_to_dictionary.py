@@ -44,7 +44,10 @@ def convert_to_records(data):
         try:
             return int(s)
         except (ValueError, TypeError):
-            return s
+            try:
+                return float(s)
+            except (ValueError, TypeError):
+                return s
 
     def row_to_dict(row):
         converted_row = map(process_cell, row)

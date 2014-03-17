@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 from hamcrest import *
-from collector.classes.process import *
+from collector.process import *
 
 
 class TestProcess(unittest.TestCase):

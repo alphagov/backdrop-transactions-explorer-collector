@@ -1,0 +1,13 @@
+#!/usr/bin/env python
+
+import json
+import sys
+from collector.classes.backdrop_json_encoder import BackdropJSONEncoder
+from collector.spreadsheet_to_dictionary import spreadsheet_to_dictionary
+from collector.process import process
+
+
+if __name__ == '__main__':
+    data = spreadsheet_to_dictionary(sys.argv[1:])
+    data = process(data)
+    sys.stdout.write(json.dumps(data, cls=BackdropJSONEncoder))

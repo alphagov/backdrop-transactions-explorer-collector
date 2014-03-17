@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import sys
 import gspread
 import argparse
@@ -19,10 +20,25 @@ def get_google_spreadsheet_data(username, password, key, worksheet):
     return spreadsheet.worksheet(worksheet).get_all_values()
 
 
+def tidy_transactions_explorer_headers(data):
+    """Removes pound signs from the end of Transactions Explorer headers, because string encoding
+       is never fun"""
+
+    tidy_data = []
+
+    for element in data:
+        element = element.replace(u'(£)', '').strip()
+        tidy_data.append(element)
+
+    return tidy_data
+
+
 def convert_to_records(data):
     """Transforms a list of lists into a list of dictionaries, where data[0]
        is the header row of data"""
     header, rows = data[0], data[1:]
+
+    header = tidy_transactions_explorer_headers(header)
 
     def process_cell(s):
         try:

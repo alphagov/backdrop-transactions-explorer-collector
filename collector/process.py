@@ -152,9 +152,9 @@ def process(data):
                             number_of_transactions = handle_bad_data(service.get(data_type.get_key('Vol.', period)))
                             number_of_digital_transactions = handle_bad_data(service.get(data_type.get_key('Digital vol.', period)))
 
-                            if number_of_transactions == None or number_of_transactions == 0:
-                                metric_value = None
-                            elif number_of_digital_transactions == None or number_of_digital_transactions == 0:
+                            if number_of_digital_transactions == 0:
+                                metric_value = 0
+                            elif number_of_transactions == None or number_of_transactions == 0 or number_of_digital_transactions == None:
                                 metric_value = None
                             else:
                                 metric_value = (number_of_digital_transactions / (number_of_transactions + 0.0))

@@ -32,10 +32,14 @@ def setup_data_types():
     seasonally_adjusted = TransactionsExplorerDataType(
         'seasonally-adjusted', '{period} {metric}',
         {
-            'Vol.': 'number-of-transactions',
-            u'CPT (£)': 'cost-per-transaction',
-            'Digital vol.': 'number-of-digital-transactions',
-            u'Digital CPT (£)': 'digital-cost-per-transaction',
+            u'Vol.': 'number_of_transactions',
+            u'CPT': 'cost_per_transaction',
+            u'Digital vol.': 'number_of_digital_transactions',
+            u'Digital CPT': 'digital_cost_per_transaction',
+            # The following two fields are not stored in the spreadsheet,
+            # they are calculated below
+            u'Digital take-up': 'digital_takeup',
+            u'Total cost': 'total_cost',
         },
         {
             '2012-Q4': {
@@ -58,7 +62,8 @@ def setup_data_types():
                 '_start_at': datetime.datetime(2012, 10, 01, 0, 0),
                 '_end_at': datetime.datetime(2013, 10, 01, 0, 0),
             },
-        }
+        },
+        'year'
     )
 
     # Quarterly data is more granular than seasonally-adjusted data but only
@@ -68,8 +73,8 @@ def setup_data_types():
     quarterly = TransactionsExplorerDataType(
         'quarterly', '{metric}\n{period}',
         {
-            'Total transactions': 'number-of-transactions',
-            'Digital transactions': 'number-of-digital-transactions',
+            u'Total transactions': 'number_of_transactions',
+            u'Digital transactions': 'number_of_digital_transactions',
         },
         {
             'Jul - Sep 2012': {
@@ -92,7 +97,8 @@ def setup_data_types():
                 '_start_at': datetime.datetime(2013, 07, 01, 0, 0),
                 '_end_at': datetime.datetime(2013, 10, 01, 0, 0),
             },
-        }
+        },
+        'quarter'
     )
 
     return [seasonally_adjusted, quarterly]
@@ -112,21 +118,46 @@ def process(data):
             for period in data_type.periods:
                 start_at = data_type.get_period_start_date(period)
                 end_at = data_type.get_period_end_date(period)
+                period_duration = data_type.period_duration
                 service_id = service.identifier()
 
                 datum_id = str(start_at) + str(end_at) + service_id.encode('utf-8')
 
                 datum = {
                     '_id': base64.b64encode(datum_id),
-                    '_start_at': start_at,
-                    '_end_at': end_at,
-                    'service-id': service_id,
+                    '_timestamp': start_at,
+                    'end_at': end_at,
+                    'period': period_duration,
+                    'service_id': service_id,
                     'type': data_type.title,
                 }
 
                 for metric in data_type.metrics:
+
                     metric_key = data_type.get_key(metric, period)
-                    metric_value = handle_bad_data(service.get(metric_key))
+
+                    if service.attribute_exists(metric_key):
+                        metric_value = handle_bad_data(service.get(metric_key))
+                    else:
+                        if metric == 'Total cost':
+                            number_of_transactions = handle_bad_data(service.get(data_type.get_key('Vol.', period)))
+                            cpt = handle_bad_data(service.get(data_type.get_key(u'CPT', period)))
+
+                            if number_of_transactions == None or cpt == None:
+                                metric_value = None
+                            else:
+                                metric_value = (number_of_transactions * cpt)
+
+                        elif metric == 'Digital take-up':
+                            number_of_transactions = handle_bad_data(service.get(data_type.get_key('Vol.', period)))
+                            number_of_digital_transactions = handle_bad_data(service.get(data_type.get_key('Digital vol.', period)))
+
+                            if number_of_digital_transactions == 0:
+                                metric_value = 0
+                            elif number_of_transactions == None or number_of_transactions == 0 or number_of_digital_transactions == None:
+                                metric_value = None
+                            else:
+                                metric_value = (number_of_digital_transactions / (number_of_transactions + 0.0))
 
                     tidy_metric_name = data_type.metrics[metric]
                     datum[tidy_metric_name] = metric_value

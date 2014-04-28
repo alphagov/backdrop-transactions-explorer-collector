@@ -9,6 +9,7 @@ class TestService(unittest.TestCase):
     def setUp(self):
         self.service = Service(3, {
             u'Name of service': 'Magical test service',
+            u'Slug': 'magical-test-service',
             u'Abbr': 'GDS',
             u'Weird Key': 456,
             u'Another Key (£)': 123,
@@ -20,7 +21,7 @@ class TestService(unittest.TestCase):
 
     def test_it_returns_an_identifier(self):
         identifier = self.service.identifier()
-        assert_that(identifier, is_('3 GDS Magical test service'))
+        assert_that(identifier, is_('magical-test-service'))
 
     def test_it_returns_a_datum(self):
         datum = self.service.get('Weird Key')

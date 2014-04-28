@@ -16,6 +16,10 @@ class Service(object):
     def attribute_exists(self, key):
         return key in self.detailed_data
 
+    def get_datum(self, key):
+        datum = self.handle_bad_data(self.get(key))
+        return datum
+
     def get(self, key):
         return self.detailed_data[key]
 
@@ -28,3 +32,14 @@ class Service(object):
 
     def abbreviated_department(self):
         return self.get('Abbr')
+
+    def handle_bad_data(self, datum):
+        # TODO: Should we be more explicit about non-requested (***) data?
+        if datum == '' or datum == '-' or datum == '***':
+            return None
+        elif not isinstance(datum, (int, long, float, complex)):
+            # If the value we get from the spreadsheet is not numeric, send
+            # that to Backdrop as a null data point
+            return None
+        else:
+            return datum

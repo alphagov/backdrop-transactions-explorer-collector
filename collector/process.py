@@ -75,6 +75,9 @@ def setup_data_types():
         {
             u'Total transactions': 'number_of_transactions',
             u'Digital transactions': 'number_of_digital_transactions',
+            # The following field is not stored in the spreadsheet,
+            # it is calculated below
+            u'Digital take-up': 'digital_takeup',
         },
         {
             'Jul - Sep 2012': {
@@ -149,8 +152,8 @@ def process(data):
                                 metric_value = (number_of_transactions * cpt)
 
                         elif metric == 'Digital take-up':
-                            number_of_transactions = handle_bad_data(service.get(data_type.get_key('Vol.', period)))
-                            number_of_digital_transactions = handle_bad_data(service.get(data_type.get_key('Digital vol.', period)))
+                            number_of_transactions = handle_bad_data(service.get(data_type.get_key(data_type.get_spreadsheet_title_from_metric('number_of_transactions'), period)))
+                            number_of_digital_transactions = handle_bad_data(service.get(data_type.get_key(data_type.get_spreadsheet_title_from_metric('number_of_digital_transactions'), period)))
 
                             if number_of_digital_transactions == 0:
                                 metric_value = 0

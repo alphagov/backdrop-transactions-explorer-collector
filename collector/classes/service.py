@@ -40,6 +40,7 @@ class Service(object):
         elif not isinstance(datum, (int, long, float, complex)):
             # If the value we get from the spreadsheet is not numeric, send
             # that to Backdrop as a null data point
+            print "Data from the spreadsheet doesn't look numeric: <{0}> (from {1})".format(datum, self.identifier())
             return None
         else:
             return datum

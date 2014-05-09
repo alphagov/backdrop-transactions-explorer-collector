@@ -151,9 +151,11 @@ def process(data):
                             number_of_transactions = service.get_datum(data_type.get_key(data_type.get_spreadsheet_title_from_metric('number_of_transactions'), period))
                             number_of_digital_transactions = service.get_datum(data_type.get_key(data_type.get_spreadsheet_title_from_metric('number_of_digital_transactions'), period))
 
-                            if number_of_digital_transactions == 0:
+                            if not number_of_transactions:
+                                metric_value = None
+                            elif number_of_digital_transactions == 0:
                                 metric_value = 0
-                            elif number_of_transactions == None or number_of_transactions == 0 or number_of_digital_transactions == None:
+                            elif number_of_digital_transactions == None:
                                 metric_value = None
                             else:
                                 metric_value = (number_of_digital_transactions / (number_of_transactions + 0.0))

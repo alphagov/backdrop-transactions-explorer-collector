@@ -7,18 +7,6 @@ from classes.transactions_explorer_data_type import TransactionsExplorerDataType
 from classes.service import Service
 
 
-def handle_bad_data(datum):
-    # TODO: Should we be more explicit about non-requested (***) data?
-    if datum == '' or datum == '-' or datum == '***':
-        return None
-    elif not isinstance(datum, (int, long, float, complex)):
-        # If the value we get from the spreadsheet is not numeric, send
-        # that to Backdrop as a null data point
-        return None
-    else:
-        return datum
-
-
 def setup_data_types():
     # Each service contains 2 different ways of returning data: quarterly,
     # and seasonally adjusted. Each of the 2 ways of returning data is
@@ -75,6 +63,9 @@ def setup_data_types():
         {
             u'Total transactions': 'number_of_transactions',
             u'Digital transactions': 'number_of_digital_transactions',
+            # The following field is not stored in the spreadsheet,
+            # it is calculated below
+            u'Digital take-up': 'digital_takeup',
         },
         {
             'Jul - Sep 2012': {
@@ -137,11 +128,11 @@ def process(data):
                     metric_key = data_type.get_key(metric, period)
 
                     if service.attribute_exists(metric_key):
-                        metric_value = handle_bad_data(service.get(metric_key))
+                        metric_value = service.get_datum(metric_key)
                     else:
                         if metric == 'Total cost':
-                            number_of_transactions = handle_bad_data(service.get(data_type.get_key('Vol.', period)))
-                            cpt = handle_bad_data(service.get(data_type.get_key(u'CPT', period)))
+                            number_of_transactions = service.get_datum(data_type.get_key('Vol.', period))
+                            cpt = service.get_datum(data_type.get_key(u'CPT', period))
 
                             if number_of_transactions == None or cpt == None:
                                 metric_value = None
@@ -149,8 +140,8 @@ def process(data):
                                 metric_value = (number_of_transactions * cpt)
 
                         elif metric == 'Digital take-up':
-                            number_of_transactions = handle_bad_data(service.get(data_type.get_key('Vol.', period)))
-                            number_of_digital_transactions = handle_bad_data(service.get(data_type.get_key('Digital vol.', period)))
+                            number_of_transactions = service.get_datum(data_type.get_key(data_type.get_spreadsheet_title_from_metric('number_of_transactions'), period))
+                            number_of_digital_transactions = service.get_datum(data_type.get_key(data_type.get_spreadsheet_title_from_metric('number_of_digital_transactions'), period))
 
                             if number_of_digital_transactions == 0:
                                 metric_value = 0

@@ -19,3 +19,8 @@ class TransactionsExplorerDataType(object):
 
     def get_period_end_date(self, period_key):
         return self.periods[period_key]['_end_at']
+
+    def get_spreadsheet_title_from_metric(self, metric_name):
+        for key, value in self.metrics.iteritems():
+            if value == metric_name:
+                return key

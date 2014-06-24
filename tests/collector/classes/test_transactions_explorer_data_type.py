@@ -15,6 +15,7 @@ class TestTransactionsExplorerDataType(unittest.TestCase):
                     '_end_at': datetime.datetime(2014, 04, 01),
                 },
             },
+            'month',
         )
 
     def test_it_returns_a_correctly_formatted_key(self):
@@ -26,3 +27,7 @@ class TestTransactionsExplorerDataType(unittest.TestCase):
         assert_that(start_date, is_(datetime.datetime(2014, 03, 01)))
         end_date = self.data_type.get_period_end_date('March 2014')
         assert_that(end_date, is_(datetime.datetime(2014, 04, 01)))
+
+    def test_it_returns_the_ugly_metric_based_on_the_sane_metric(self):
+        ugly_name = self.data_type.get_spreadsheet_title_from_metric('nice-metric-name')
+        assert_that(ugly_name, is_('Ugly Metric Name'))

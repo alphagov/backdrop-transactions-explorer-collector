@@ -35,7 +35,7 @@ class Service(object):
 
     def handle_bad_data(self, datum):
         # TODO: Should we be more explicit about non-requested (***) data?
-        if datum == '' or datum == '-' or datum == '***':
+        if datum == '' or datum == '-' or datum == '***' or datum == None:
             return None
         elif not isinstance(datum, (int, long, float, complex)):
             # If the value we get from the spreadsheet is not numeric, send

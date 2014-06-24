@@ -50,6 +50,10 @@ def setup_data_types():
                 '_start_at': datetime.datetime(2012, 10, 01, 0, 0),
                 '_end_at': datetime.datetime(2013, 10, 01, 0, 0),
             },
+            '2014-Q1': {
+                '_start_at': datetime.datetime(2013, 01, 01, 0, 0),
+                '_end_at': datetime.datetime(2014, 01, 01, 0, 0),
+            },
         },
         'year'
     )
@@ -87,6 +91,10 @@ def setup_data_types():
             'Jul - Sep 2013': {
                 '_start_at': datetime.datetime(2013, 07, 01, 0, 0),
                 '_end_at': datetime.datetime(2013, 10, 01, 0, 0),
+            },
+            'Oct - Dec 2013': {
+                '_start_at': datetime.datetime(2013, 10, 01, 0, 0),
+                '_end_at': datetime.datetime(2014, 01, 01, 0, 0),
             },
         },
         'quarter'
@@ -143,9 +151,11 @@ def process(data):
                             number_of_transactions = service.get_datum(data_type.get_key(data_type.get_spreadsheet_title_from_metric('number_of_transactions'), period))
                             number_of_digital_transactions = service.get_datum(data_type.get_key(data_type.get_spreadsheet_title_from_metric('number_of_digital_transactions'), period))
 
-                            if number_of_digital_transactions == 0:
+                            if not number_of_transactions:
+                                metric_value = None
+                            elif number_of_digital_transactions == 0:
                                 metric_value = 0
-                            elif number_of_transactions == None or number_of_transactions == 0 or number_of_digital_transactions == None:
+                            elif number_of_digital_transactions == None:
                                 metric_value = None
                             else:
                                 metric_value = (number_of_digital_transactions / (number_of_transactions + 0.0))

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -o pipefail
+
 echo "Setting up a virtualenv and installing dependencies"
 
 virtualenv ./virtualenv/
@@ -14,6 +16,6 @@ echo "{\"transactions_explorer\": {\"username\": \"$GOOGLE_USERNAME\",\"password
 
 echo "Posting data to Backdrop"
 
-curl $BACKDROP_ENDPOINT --request POST --header "Authorization: Bearer $BACKDROP_TOKEN" --header 'Content-type: application/json' --data @transactions-explorer-data.json
+curl --fail $BACKDROP_ENDPOINT --request POST --header "Authorization: Bearer $BACKDROP_TOKEN" --header 'Content-type: application/json' --data @transactions-explorer-data.json
 
 echo "Done."

@@ -22,6 +22,7 @@ class TestService(unittest.TestCase):
 
     @patch.object(Service, 'get')
     def test_get_datum_calls_get_with_the_key_name(self, service_get):
+        service_get.return_value = 456
         datum = self.service.get_datum('Weird Key')
         service_get.assert_called_with('Weird Key')
 

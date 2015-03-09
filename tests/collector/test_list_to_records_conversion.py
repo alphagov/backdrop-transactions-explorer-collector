@@ -1,7 +1,7 @@
 # coding=utf8
 import unittest
 from hamcrest import *
-from collector.spreadsheet_to_json import convert_to_records
+from collector.spreadsheet_to_dictionary import convert_to_records
 import json
 
 
@@ -27,16 +27,29 @@ class TestListToRecordsConversion(unittest.TestCase):
 
         assert_that(convert_to_records(data), is_(expected_records))
 
-    def test_it_converts_only_an_integer_to_a_number(self):
+    def test_it_converts_an_integer_to_a_number(self):
         data = [
-            ['IntegerColumn', 'FloatColumn', 'StringColumn'],
-            ['301', '42.35', 'This is still a string']
+            ['IntegerColumn', 'StringColumn'],
+            ['301', 'This is still a string']
         ]
         expected_records = [
             {
-                'IntegerColumn': 301,
-                'FloatColumn': '42.35',
-                'StringColumn': 'This is still a string'
+                u'IntegerColumn': 301,
+                u'StringColumn': 'This is still a string'
+            }
+        ]
+
+        assert_that(convert_to_records(data), is_(expected_records))
+
+    def test_it_converts_a_float_to_a_number(self):
+        data = [
+            ['FloatColumn', 'StringColumn'],
+            ['42.75', 'This is still a string']
+        ]
+        expected_records = [
+            {
+                u'FloatColumn': 42.75,
+                u'StringColumn': 'This is still a string'
             }
         ]
 

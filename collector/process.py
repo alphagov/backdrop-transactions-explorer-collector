@@ -62,6 +62,10 @@ def setup_data_types():
                 '_start_at': datetime.datetime(2013, 07, 01, 0, 0),
                 '_end_at': datetime.datetime(2014, 07, 01, 0, 0),
             },
+            '2014-Q4': {
+                '_start_at': datetime.datetime(2013, 10, 01, 0, 0),
+                '_end_at': datetime.datetime(2014, 10, 01, 0, 0),
+            },
         },
         'year'
     )
@@ -111,6 +115,10 @@ def setup_data_types():
             'Apr - Jun 2014': {
                 '_start_at': datetime.datetime(2014, 04, 01, 0, 0),
                 '_end_at': datetime.datetime(2014, 07, 01, 0, 0),
+            },
+            'Jul - Sep 2014': {
+                '_start_at': datetime.datetime(2014, 07, 01, 0, 0),
+                '_end_at': datetime.datetime(2014, 10, 01, 0, 0),
             },
         },
         'quarter'

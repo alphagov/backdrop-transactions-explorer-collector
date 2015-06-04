@@ -1,27 +1,36 @@
 # -*- coding: utf-8 -*-
-import sys
 import gspread
 import argparse
 import json
+from oauth2client.client import SignedJwtAssertionCredentials
 
 
 def parse_args(args):
     parser = argparse.ArgumentParser()
     parser.add_argument('doc', help="The key in the configuration file for "
-                                      "the document you want")
+                                    "the document you want")
     parser.add_argument('config', help="The configuration file")
     return parser.parse_args(args)
 
 
-def get_google_spreadsheet_data(username, password, key, worksheet):
-    google = gspread.login(username, password)
+def get_google_spreadsheet_data(credentials, key, worksheet):
+    client_email = credentials['client_email']
+    private_key = credentials['private_key']
+    scope = ['https://spreadsheets.google.com/feeds']
+    credentials = SignedJwtAssertionCredentials(
+        client_email,
+        private_key,
+        scope)
+
+    google = gspread.authorize(credentials)
     spreadsheet = google.open_by_key(key)
 
     return spreadsheet.worksheet(worksheet).get_all_values()
 
 
 def tidy_transactions_explorer_headers(data):
-    """Removes pound signs from the end of Transactions Explorer headers, because string encoding
+    """Removes pound signs from the end of
+       Transactions Explorer headers, because string encoding
        is never fun"""
 
     tidy_data = []
@@ -61,9 +70,9 @@ def spreadsheet_to_dictionary(args):
     with open(arguments.config) as f:
         config = json.loads(f.read())
         this_config = config[arguments.doc]
-        raw_data = get_google_spreadsheet_data(this_config['username'],
-                                               this_config['password'],
-                                               this_config['key'],
-                                               this_config['worksheet'])
+        raw_data = get_google_spreadsheet_data(
+            this_config['credentials'],
+            this_config['key'],
+            this_config['worksheet'])
 
         return convert_to_records(raw_data)

@@ -10,8 +10,7 @@ class TestJsonGeneratedFromSpreadsheet(unittest.TestCase):
         self.data = [['foo', 'bar', 'zap'], [1, 2, 3], [4, 5, 6]]
         self.config = {
             "doc_name": {
-                "username": "_",
-                "password": "_",
+                "credentials": "{}",
                 "key": "_",
                 "worksheet": "sheet1"
             }

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -o pipefail
+set -eo pipefail
 
 echo "Setting up a virtualenv and installing dependencies"
 

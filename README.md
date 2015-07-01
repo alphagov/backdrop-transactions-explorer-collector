@@ -39,7 +39,7 @@ Create a `config.json` file in this directory that looks a bit like:
 This command will output JSON that can be consumed by other tools, eg piped
 in to [backdropsend](https://github.com/alphagov/backdropsend).
 
-## Fetching data
+## Getting data for CSV download
 
 ### Prerequisites
 
@@ -64,7 +64,7 @@ with `pip install -r requirements_csv.txt`.
 After setting this up for the first time, you just need to run
 `workon transactions-explorer` in future.
 
-### Running the job
+### Fetching data
 
 First, ensure your Cabinet Office email account is authorised to access the
 Transactions Explorer spreadsheet.
@@ -77,7 +77,21 @@ and store it in `data/`
 * On your base machine, activate a virtualenv.
 * Install the prerequisites in requirements_csv.txt
 * Fetch the data through either of the methods below:
-  * In tools, Run `python fetch_csv.py`. This will authenticate against Google in your browser, then download the Transactions Explorer document to `data/services.csv`. It can be parametrized with the following arguments:
+  * In tools, run `python fetch_csv.py`. This will authenticate against Google in your browser, then download the Transactions Explorer document to `data/services.csv`. It can be parameterised with the following arguments:
       * `--client-secrets`: Google API client secrets JSON file (default: `data/client_secrets.json`)
       * `--oauth-tokens`: Google API OAuth tokens file (default: `data/tokens.dat`)
+
+### Creating a CSV for download
+
+First, ensure that you have a services.csv file in the tools/data directory. If not, run the fetch_csv script.
+
+* On your base machine, activate a virtualenv.
+* Install the prerequisites in requirements_csv.txt
+* Create the csv for download through any of the methods below:
+  * In tools, run `python create_transaction_volumes_csv.py`. This will transform and run calculations against the data in `data\services.csv` and then save it to `data\transaction-volumes.csv`. It can be parameterised with the following arguments:
+      * `--services-data`: Services CSV datafile (default: `data/services.csv`)
+      * `--path-prefix`: Prefix for generated URL paths (default: `/`)
+      * `--asset-prefix`: Prefix for generated asset URLs (default: `/transactions-explorer/`)
+      * `--static-prefix`: Path to manifest file containing assets digests
+
 

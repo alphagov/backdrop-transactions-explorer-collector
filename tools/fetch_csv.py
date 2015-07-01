@@ -1,18 +1,14 @@
 #!/usr/bin/env python
 
-import httplib2
 import os
 import sys
-import argparse
+
+import httplib2
 from apiclient.discovery import build
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
 from oauth2client.tools import run
-
-
-def _create_parser():
-    return argparse.ArgumentParser(
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+from helper import _create_parser, create_directory
 
 
 def parse_args_for_fetch(args):
@@ -25,11 +21,6 @@ def parse_args_for_fetch(args):
                         default='data/tokens.dat')
 
     return parser.parse_args(args)
-
-
-def create_directory(output_dir):
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
 
 
 arguments = parse_args_for_fetch(sys.argv[1:])

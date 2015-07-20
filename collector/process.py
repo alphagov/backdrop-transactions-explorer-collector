@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 import base64
 import datetime
-import json
-import sys
-from classes.transactions_explorer_data_type import TransactionsExplorerDataType
+from classes.transactions_explorer_data_type import(
+    TransactionsExplorerDataType)
 from classes.service import Service
 
 
@@ -31,40 +30,40 @@ def setup_data_types():
         },
         {
             '2012-Q4': {
-                '_start_at': datetime.datetime(2011, 04, 01, 0, 0),
-                '_end_at': datetime.datetime(2012, 04, 01, 0, 0),
-            },
-            '2013-Q1': {
                 '_start_at': datetime.datetime(2012, 01, 01, 0, 0),
                 '_end_at': datetime.datetime(2013, 01, 01, 0, 0),
             },
-            '2013-Q2': {
+            '2013-Q1': {
                 '_start_at': datetime.datetime(2012, 04, 01, 0, 0),
                 '_end_at': datetime.datetime(2013, 04, 01, 0, 0),
             },
-            '2013-Q3': {
+            '2013-Q2': {
                 '_start_at': datetime.datetime(2012, 07, 01, 0, 0),
                 '_end_at': datetime.datetime(2013, 07, 01, 0, 0),
             },
-            '2013-Q4': {
+            '2013-Q3': {
                 '_start_at': datetime.datetime(2012, 10, 01, 0, 0),
                 '_end_at': datetime.datetime(2013, 10, 01, 0, 0),
             },
-            '2014-Q1': {
+            '2013-Q4': {
                 '_start_at': datetime.datetime(2013, 01, 01, 0, 0),
                 '_end_at': datetime.datetime(2014, 01, 01, 0, 0),
             },
-            '2014-Q2': {
+            '2014-Q1': {
                 '_start_at': datetime.datetime(2013, 04, 01, 0, 0),
                 '_end_at': datetime.datetime(2014, 04, 01, 0, 0),
             },
-            '2014-Q3': {
+            '2014-Q2': {
                 '_start_at': datetime.datetime(2013, 07, 01, 0, 0),
                 '_end_at': datetime.datetime(2014, 07, 01, 0, 0),
             },
-            '2014-Q4': {
+            '2014-Q3': {
                 '_start_at': datetime.datetime(2013, 10, 01, 0, 0),
                 '_end_at': datetime.datetime(2014, 10, 01, 0, 0),
+            },
+            '2014-Q4': {
+                '_start_at': datetime.datetime(2014, 01, 01, 0, 0),
+                '_end_at': datetime.datetime(2015, 01, 01, 0, 0),
             },
         },
         'year'
@@ -120,6 +119,10 @@ def setup_data_types():
                 '_start_at': datetime.datetime(2014, 07, 01, 0, 0),
                 '_end_at': datetime.datetime(2014, 10, 01, 0, 0),
             },
+            'Oct - Dec 2014': {
+                '_start_at': datetime.datetime(2014, 10, 01, 0, 0),
+                '_end_at': datetime.datetime(2015, 01, 01, 0, 0),
+            },
         },
         'quarter'
     )
@@ -144,7 +147,8 @@ def process(data):
                 period_duration = data_type.period_duration
                 service_id = service.identifier()
 
-                datum_id = str(start_at) + str(end_at) + service_id.encode('utf-8')
+                datum_id = str(start_at) + str(end_at) + service_id.encode(
+                    'utf-8')
 
                 datum = {
                     '_id': base64.b64encode(datum_id),
@@ -163,26 +167,37 @@ def process(data):
                         metric_value = service.get_datum(metric_key)
                     else:
                         if metric == 'Total cost':
-                            number_of_transactions = service.get_datum(data_type.get_key('Vol.', period))
-                            cpt = service.get_datum(data_type.get_key(u'CPT', period))
+                            number_of_transactions = service.get_datum(
+                                data_type.get_key('Vol.', period))
+                            cpt = service.get_datum(data_type.get_key(
+                                u'CPT', period))
 
-                            if number_of_transactions == None or cpt == None:
+                            if number_of_transactions is None or cpt is None:
                                 metric_value = None
                             else:
                                 metric_value = (number_of_transactions * cpt)
 
                         elif metric == 'Digital take-up':
-                            number_of_transactions = service.get_datum(data_type.get_key(data_type.get_spreadsheet_title_from_metric('number_of_transactions'), period))
-                            number_of_digital_transactions = service.get_datum(data_type.get_key(data_type.get_spreadsheet_title_from_metric('number_of_digital_transactions'), period))
+                            number_of_transactions = service.get_datum(
+                                data_type.get_key(
+                                    data_type.get_spreadsheet_title_from_metric(  # noqa
+                                        'number_of_transactions'), period))
+                            number_of_digital_transactions = service.get_datum(
+                                data_type.get_key(
+                                    data_type.get_spreadsheet_title_from_metric(  # noqa
+                                        'number_of_digital_transactions'),
+                                    period))
 
                             if not number_of_transactions:
                                 metric_value = None
                             elif number_of_digital_transactions == 0:
                                 metric_value = 0
-                            elif number_of_digital_transactions == None:
+                            elif number_of_digital_transactions is None:
                                 metric_value = None
                             else:
-                                metric_value = (number_of_digital_transactions / (number_of_transactions + 0.0))
+                                metric_value = (
+                                    number_of_digital_transactions / (
+                                        number_of_transactions + 0.0))
 
                     tidy_metric_name = data_type.metrics[metric]
                     datum[tidy_metric_name] = metric_value

@@ -17,6 +17,16 @@ def setup_data_types():
     # that of the previous 3 quarters to come up with new seasonally adjusted
     # data point.
 
+    # For seasonally adjusted data, the keys used to extract the data
+    # (e.g. 2014-Q4) represent when the data was *requested* not the
+    # period which the data is for. The period the data is for is normally
+    # the one before the one implied by the key. As a result the start at
+    # for 2014-Q4 is October 2013 rather than January 2014.
+
+    # 2012-Q4 is a special case of trial data collection and so does not fall
+    # into the normal pattern. It was requested in 2012-Q4 but represents the
+    # time period below (April 2011 to March 2012)
+
     seasonally_adjusted = TransactionsExplorerDataType(
         'seasonally-adjusted', '{period} {metric}',
         {

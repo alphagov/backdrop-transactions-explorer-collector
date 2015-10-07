@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function
 import string
+import sys
 
 
 def sanitise_string(messy_str):
@@ -40,7 +42,10 @@ class Service(object):
         elif not isinstance(datum, (int, long, float, complex)):
             # If the value we get from the spreadsheet is not numeric, send
             # that to Backdrop as a null data point
-            print "Data from the spreadsheet doesn't look numeric: <{0}> (from {1})".format(datum, self.identifier())
-            return None
+            try:
+                return float(datum.replace(',', ''))
+            except ValueError as e:
+                print("Bad data: <{0}> (from {1})".format(
+                    datum, self.identifier()), file=sys.stderr)
         else:
             return datum

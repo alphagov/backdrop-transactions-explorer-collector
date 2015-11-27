@@ -1,40 +1,91 @@
 # Transactions Explorer collector for Backdrop
 
-This Python app takes Transactions Explorer data from a Google Spreadsheet
+This Python application takes Transactions Explorer data from a Google Spreadsheet
 and puts it into the [Performance Platform][pp] data store, [Backdrop][].
 
 [pp]: https://www.gov.uk/performance
 [Backdrop]: https://github.com/alphagov/backdrop
 
+
+The application achieves this with the help of a Jenkins job `jenkins-data.sh`, which is responsible
+for:
+
+1. Collecting the Transactions Explorer data from a Google spreadsheet which
+is maintained by the on-boarding team;
+2. Posting the collected data into the Backdrop application.
+
 It is a more specific use case of the [backdrop-google-spreadsheet-collector][].
+
+NOTE - Before running the Jenkins job, be sure to add new quarters and seasonally adjusted
+fields to the application - see [commit][] by way of example and discuss which dates should be
+added with the Performance Platform On-boarding team.
+
+[commit]: https://github.com/alphagov/backdrop-transactions-explorer-collector/commit/dd5567f01bb9afcb0ea4190de015a91af550b18f
 
 [backdrop-google-spreadsheet-collector]: https://github.com/alphagov/backdrop-google-spreadsheet-collector
 
-## Setup
+## Developer setup
 
 1. Get yourself a virtualenv (optional)
 2. `pip install --allow-external argparse -r requirements_for_tests.txt`
+
+If you are using Mac OSX 10.x.x and encounter an error around the including of
+`ffi.h` during the build, try running `xcode-select --install` in your terminal.
 
 ## Running tests
 
 `nosetests`
 
-## Running the app
+## Fetching transactions explorer data from a development machine
 
-`./backdrop-google-spreadsheet-collector the_document_i_want config.json`
+As a developer, you might want to fetch the transactions explorer data from
+the Google spreadsheet so as to mimic step (1) of the Jenkins job, summarised above.
+To do so:
 
-Create a `config.json` file in this directory that looks a bit like:
+1. Get access to the Google spreadsheet
+2. Create an import configuration file
+3. Run the application
+
+### Get access to the Google spreadsheet
+
+When the application is run, its first task is to collect data from the Google spreadsheet and
+convert this data into a dict for further processing before posting to Backdrop.
+
+Access to the Google spreadsheet is via OAuth 2.0 using the Python `oauth2client`. For this,
+you will need a Google Service Account, which is an account that belongs to an application
+instead of an individual end user.
+
+You can set up a Service Account in the Google Development Console. Simply log in,
+create a project and then add Service Account credentials for this project of key
+type 'JSON'. Download the JSON credentials files.
+
+Now ask the on-boarding team to grant access to the Google spreadsheet for the client
+email address that can be found in JSON credentials file.
+
+### Create an import configuration file
+
+In the application's root directory, create a `config.json` file with the following
+content:
 
 ```json
 {
-  "the_document_i_want": {
-    "username": "email@example.com",
-    "password": "google-app-specific-password",
-    "key": "google-docs-spreadsheet-key",
-    "worksheet": "worksheet_title_from_google_spreadsheet_footer"
+  "transactions_explorer_feed": {
+    "credentials": {
+      "client_email": "<from Service Account JSON file>",
+      "private_key": "<from Service Account JSON file>"
+    },
+    "key": "<from URL of Google spreadsheet>",
+    "worksheet": "name of the data worksheet on the Google spreadsheet"
   }
 }
 ```
+
+### Run the application
+
+To run the application, type the following from within the application's
+on your host:
+
+`./backdrop-transactions-explorer-collector transactions_explorer_feed config.json`
 
 This command will output JSON that can be consumed by other tools, eg piped
 in to [backdropsend](https://github.com/alphagov/backdropsend).

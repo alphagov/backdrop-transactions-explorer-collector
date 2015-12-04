@@ -4,6 +4,7 @@ from collector.classes.service import sanitise_string
 from collector.classes.service import Service
 from hamcrest import *
 from mock import patch
+import sys
 
 
 class TestService(unittest.TestCase):
@@ -44,7 +45,8 @@ class TestService(unittest.TestCase):
         assert_that(self.service.handle_bad_data('-'), is_(None))
         assert_that(self.service.handle_bad_data('***'), is_(None))
 
-    def test_bad_data_handles_strings_we_dont_know_about(self):
+    @patch('collector.classes.service.sys.stderr')
+    def test_bad_data_handles_strings_we_dont_know_about(self, stderr):
         assert_that(self.service.handle_bad_data('foo'), is_(None))
 
     def test_bad_datatest_bad_data_handles_numbers(self):

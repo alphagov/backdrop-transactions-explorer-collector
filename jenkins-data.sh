@@ -12,7 +12,7 @@ echo "Collecting data from the spreadsheet"
 
 echo "{\"transactions_explorer\": {\"credentials\": $GOOGLE_CREDENTIALS,\"key\": \"$GOOGLE_SPREADSHEET_KEY\",\"worksheet\": \"$GOOGLE_SPREADSHEET_WORKSHEET\" } }" > config.json
 
-./backdrop-transactions-explorer-collector transactions_explorer config.json > transactions-explorer-data.json
+./backdrop-transactions-explorer-collector transactions_explorer config.json > transactions-explorer-data.json 2>errors.txt
 
 echo "Posting data to Backdrop"
 

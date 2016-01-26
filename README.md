@@ -115,31 +115,48 @@ with `pip install -r requirements_csv.txt`.
 After setting this up for the first time, you just need to run
 `workon transactions-explorer` in future.
 
-### Fetching data
+### Extracting Transactions Explorer data into a CSV file
 
-First, ensure your Cabinet Office email account is authorised to access the
+Firstly, ensure your Cabinet Office email account is authorised to access the
 Transactions Explorer spreadsheet.
 
-Then:
+Next, create and download a client secrets file:
 
-* Create a new installed application (of type "Native") in the [Google APIs console][console],
-with "Drive API" service enabled, download the `client_secrets.json` file
-and store it in `data/`
-* On your base machine, activate a virtualenv.
+* Log into the [Google Developers Console][google console] using your Cabinet Office email account
+* Create a new project called, for example, Backdrop TX Collector
+* Search for 'Drive API' and click the Drive API option that will be returned
+* You should then be taken to the API Manager area
+* Now click the Enable API button
+* Click on the 'Credentials' options in the menu on the left-hand side of the page
+* Click the 'New credentials' button to reveal a list of credential types
+* Choose 'OAuth client ID'
+* Click the 'Configure consent screen' button
+* Now just enter a product name - it can be anything - and click Save
+* You will then be asked to choose an Application type. Choose 'Other' and enter any name
+* Click Create to reveal your client id and client secret, and then click OK
+* You will then see a list of your OAuth 2.0 client IDs
+* Click on the download icon against the client ID you just created
+* A JSON client secret file will be downloaded
+* Move this file to `tools/data` in backdrop-transactions-explorer-collector
+* Rename the file to client_secrets.json
+
+[google console]: https://console.developers.google.com/
+
+Finally, run a script to create a CSV file representation of the data in the Transactions Explorer spreadsheet:
+
+* On your base machine, activate your virtualenv
 * Install the prerequisites in requirements_csv.txt
-* Fetch the data through either of the methods below:
-  * In tools, run `python fetch_csv.py`. This will authenticate against Google in your browser, then download the Transactions Explorer document to `data/services.csv`. It can be parameterised with the following arguments:
+* From the tools directory, run `python fetch_csv.py`. This will authenticate against Google in your browser, then download the Transactions Explorer document to `data/services.csv`. It can be parameterised with the following arguments:
       * `--client-secrets`: Google API client secrets JSON file (default: `data/client_secrets.json`)
       * `--oauth-tokens`: Google API OAuth tokens file (default: `data/tokens.dat`)
 
 ### Creating a CSV for download
 
-First, ensure that you have a services.csv file in the tools/data directory. If not, run the fetch_csv script.
+First, ensure that you have a services.csv file in the tools/data directory. If not, run the fetch_csv script as detailed above.
 
-* On your base machine, activate a virtualenv.
+* On your base machine, activate a virtualenv
 * Install the prerequisites in requirements_csv.txt
-* Create the csv for download through any of the methods below:
-  * In tools, run `python create_transaction_volumes_csv.py`. This will transform and run calculations against the data in `data\services.csv` and then save it to `data\transaction-volumes.csv`. It can be parameterised with the following arguments:
+* From the tools directory, run `python create_transaction_volumes_csv.py`. This will transform and run calculations against the data in `data\services.csv` and then save it to `data\transaction-volumes.csv`. It can be parameterised with the following arguments:
       * `--services-data`: Services CSV datafile (default: `data/services.csv`)
       * `--path-prefix`: Prefix for generated URL paths (default: `/`)
       * `--asset-prefix`: Prefix for generated asset URLs (default: `/transactions-explorer/`)

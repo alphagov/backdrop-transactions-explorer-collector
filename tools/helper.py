@@ -106,9 +106,9 @@ def create_directory(output_dir):
 
 
 def keyify(text):
-    unclean = sub( r'\W+', '_', text.lower() )
-    more_clean = sub( r'_$', '', unclean )
-    return sub( r'^_', '', more_clean )
+    unclean = sub(r'\W+', '_', text.lower())
+    more_clean = sub(r'_$', '', unclean)
+    return sub(r'^_', '', more_clean)
 
 
 def as_number(num):

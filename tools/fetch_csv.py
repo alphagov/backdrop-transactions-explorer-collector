@@ -7,7 +7,7 @@ import httplib2
 from apiclient.discovery import build
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
-from oauth2client.tools import run
+from oauth2client.tools import run_flow
 from helper import _create_parser, create_directory
 
 
@@ -49,7 +49,7 @@ flow = flow_from_clientsecrets(
 storage = Storage(arguments.oauth_tokens)
 credentials = storage.get()
 if credentials is None or credentials.invalid:
-  credentials = run(flow, storage)
+  credentials = run_flow(flow, storage, arguments)
 
 http = httplib2.Http()
 http = credentials.authorize(http)

@@ -3,6 +3,7 @@
 
 import argparse
 import os
+from oauth2client import tools
 from re import sub
 from decimal import Decimal, InvalidOperation
 
@@ -60,12 +61,30 @@ CSV_FORMAT = [("Department", lambda s: s.department),
                lambda s: as_number(getattr(s, "2014_q3_digital_vol"))),
               ("July 2013 to June 2014: cost per transaction (£)",
                lambda s: as_number(getattr(s, "2014_q3_cpt"))),
-              ("Latest volume",
-                lambda s: as_number(s.latest_kpi_for('volume'))),
-              ("Latest digital volume",
-                lambda s: as_number(s.latest_kpi_for('digital_volume'))),
-              ("Latest cost per transaction (£)",
-                lambda s: as_number(s.latest_kpi_for('cost_per'))),
+              ("October 2013 to September 2014: volume",
+               lambda s: as_number(getattr(s, "2014_q4_vol"))),
+              ("October 2013 to September 2014: digital volume",
+               lambda s: as_number(getattr(s, "2014_q4_digital_vol"))),
+              ("October 2013 to September 2014: cost per transaction (£)",
+               lambda s: as_number(getattr(s, "2014_q4_cpt"))),
+              ("January 2014 to December 2015: volume",
+               lambda s: as_number(getattr(s, "2015_q1_vol"))),
+              ("January 2014 to December 2015: digital volume",
+               lambda s: as_number(getattr(s, "2015_q1_digital_vol"))),
+              ("January 2014 to December 2015: cost per transaction (£)",
+               lambda s: as_number(getattr(s, "2015_q1_cpt"))),
+              ("April 2014 to March 2015: volume",
+               lambda s: as_number(getattr(s, "2015_q2_vol"))),
+              ("April 2014 to March 2015: digital volume",
+               lambda s: as_number(getattr(s, "2015_q2_digital_vol"))),
+              ("April 2014 to March 2015: cost per transaction (£)",
+               lambda s: as_number(getattr(s, "2015_q2_cpt"))),
+              ("July 2014 to June 2015: volume",
+               lambda s: as_number(getattr(s, "2015_q3_vol"))),
+              ("July 2014 to June 2015: digital volume",
+               lambda s: as_number(getattr(s, "2015_q3_digital_vol"))),
+              ("July 2014 to June 2015: cost per transaction (£)",
+               lambda s: as_number(getattr(s, "2015_q3_cpt"))),
               ("Service Type", lambda s: s.category),
               ("URL", lambda s: s.url),
               ("Description of service", lambda s: s.description),
@@ -77,7 +96,8 @@ CSV_FORMAT = [("Department", lambda s: s.department),
 
 def _create_parser():
     return argparse.ArgumentParser(
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        parents=[tools.argparser])
 
 
 def create_directory(output_dir):
@@ -86,9 +106,9 @@ def create_directory(output_dir):
 
 
 def keyify(text):
-    unclean = sub( r'\W+', '_', text.lower() )
-    more_clean = sub( r'_$', '', unclean )
-    return sub( r'^_', '', more_clean )
+    unclean = sub(r'\W+', '_', text.lower())
+    more_clean = sub(r'_$', '', unclean)
+    return sub(r'^_', '', more_clean)
 
 
 def as_number(num):

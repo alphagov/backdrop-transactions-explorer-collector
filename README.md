@@ -88,7 +88,9 @@ on your host:
 `./backdrop-transactions-explorer-collector transactions_explorer_feed config.json`
 
 This command will output JSON that can be consumed by other tools, eg piped
-in to [backdropsend](https://github.com/alphagov/backdropsend).
+in to [backdropsend](https://github.com/alphagov/backdropsend) - for example:
+
+`cat transaction_summaries.json | ./backdrop-send --url http://backdrop-write.dev.gov.uk/data/transactional-services/summaries --token dataset-token-from-Stagecraft-database`
 
 ## Getting data for CSV download
 

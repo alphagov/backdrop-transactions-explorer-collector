@@ -144,7 +144,7 @@ def setup_data_types():
             },
             'Oct - Dec 2014': {
                 '_start_at': datetime.datetime(2014, 10, 01, 0, 0),
-                '_end_at': datetime.datetime(2014, 01, 01, 0, 0),
+                '_end_at': datetime.datetime(2015, 01, 01, 0, 0),
             },
             'Jan - Mar 2015': {
                 '_start_at': datetime.datetime(2015, 01, 01, 0, 0),

@@ -25,7 +25,7 @@ def parse_args_for_fetch(args):
 
 arguments = parse_args_for_fetch(sys.argv[1:])
 
-SPREADSHEET = '0AiLXeWvTKFmBdFpxdEdHUWJCYnVMS0lnUHJDelFVc0E'
+SPREADSHEET = '1DN98HNFtOv6POsQt501dnFiZ4Hus6Uj1IrerhDx1Guk'
 SERVICES_SHEET = '58'
 SERVICES_DATA_OUTPUT = 'data/services.csv'
 MISSING_CLIENT_SECRETS_MESSAGE = """

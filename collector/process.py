@@ -92,6 +92,10 @@ def setup_data_types():
                 '_start_at': datetime.datetime(2014, 10, 01, 0, 0),
                 '_end_at': datetime.datetime(2015, 10, 01, 0, 0),
             },
+            '2016-Q1': {
+                '_start_at': datetime.datetime(2015, 01, 01, 0, 0),
+                '_end_at': datetime.datetime(2016, 01, 01, 0, 0),
+            },
         },
         'year'
     )
@@ -161,6 +165,10 @@ def setup_data_types():
             'Jul - Sep 2015': {
                 '_start_at': datetime.datetime(2015, 07, 01, 0, 0),
                 '_end_at': datetime.datetime(2015, 10, 01, 0, 0),
+            },
+            'Oct - Dec 2015': {
+                '_start_at': datetime.datetime(2015, 10, 01, 0, 0),
+                '_end_at': datetime.datetime(2016, 01, 01, 0, 0),
             },
         },
         'quarter'

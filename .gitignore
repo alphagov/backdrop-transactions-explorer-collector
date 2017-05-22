@@ -1,6 +1,7 @@
 # backdrop-google-spreadsheet-collector
 config.json
 .idea
+virtualenv
 
 *.py[cod]
 

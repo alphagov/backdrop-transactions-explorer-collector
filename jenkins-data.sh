@@ -6,7 +6,8 @@ echo "Setting up a virtualenv and installing dependencies"
 
 virtualenv ./virtualenv/
 . ./virtualenv/bin/activate
-pip install -r requirements.txt
+./virtualenv/bin/pip install --upgrade pip wheel
+./virtualenv/bin/pip install -r requirements.txt
 
 echo "Collecting data from the spreadsheet"
 

@@ -16,7 +16,7 @@ echo "{\"transactions_explorer\": {\"credentials\": $GOOGLE_CREDENTIALS,\"key\":
 # disabling warnings because an old version of python and urllib3. script otherwise exits.
 # https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
 export PYTHONWARNINGS="ignore"
-./backdrop-transactions-explorer-collector transactions_explorer config.json > transactions-explorer-data.json 2>errors.txt
+./backdrop-transactions-explorer-collector transactions_explorer config.json > transactions-explorer-data.json
 
 echo "Posting data to Backdrop"
 

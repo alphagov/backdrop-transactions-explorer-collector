@@ -2,7 +2,7 @@
 import gspread
 import argparse
 import json
-from oauth2client.client import SignedJwtAssertionCredentials
+from oauth2client.service_account import ServiceAccountCredentials
 
 
 def parse_args(args):
@@ -14,13 +14,8 @@ def parse_args(args):
 
 
 def get_google_spreadsheet_data(credentials, key, worksheet):
-    client_email = credentials['client_email']
-    private_key = credentials['private_key']
     scope = ['https://spreadsheets.google.com/feeds']
-    credentials = SignedJwtAssertionCredentials(
-        client_email,
-        private_key,
-        scope)
+    credentials = ServiceAccountCredentials.from_json_keyfile_name('credentials.json', scope)
 
     google = gspread.authorize(credentials)
     spreadsheet = google.open_by_key(key)

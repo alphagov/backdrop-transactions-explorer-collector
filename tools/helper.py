@@ -3,7 +3,6 @@
 
 import argparse
 import os
-from oauth2client import tools
 from re import sub
 from decimal import Decimal, InvalidOperation
 
@@ -142,10 +141,9 @@ CSV_FORMAT = [("Department", lambda s: s.department),
               ("Business model", lambda s: s.business_model)]
 
 
-def _create_parser():
+def create_parser():
     return argparse.ArgumentParser(
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        parents=[tools.argparser])
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
 
 def create_directory(output_dir):

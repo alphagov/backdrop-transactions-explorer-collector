@@ -8,7 +8,7 @@ from distutils import dir_util
 import unicodecsv
 # from lib.filters import digest
 
-from helper import _create_parser
+from helper import create_parser
 from helper import create_directory
 from helper import map_services_to_csv_data
 from service import Service
@@ -20,7 +20,7 @@ static_prefix = 'https://assets.digital.cabinet-office.gov.uk/static'
 
 
 def parse_args_for_create(args):
-    parser = _create_parser()
+    parser = create_parser()
     parser.add_argument('--services-data',
                         help='Services CSV datafile',
                         default='data/services.csv')

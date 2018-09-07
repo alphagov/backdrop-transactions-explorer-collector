@@ -2,6 +2,7 @@
 config.json
 .idea
 virtualenv
+tools/data
 
 *.py[cod]
 

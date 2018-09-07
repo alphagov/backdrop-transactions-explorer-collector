@@ -5,6 +5,3 @@ PyHamcrest==1.7.2
 mock==1.0.1
 pep8==1.4.6
 coverage==3.6
-
-
-

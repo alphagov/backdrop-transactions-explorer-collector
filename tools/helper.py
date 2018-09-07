@@ -3,7 +3,6 @@
 
 import argparse
 import os
-from oauth2client import tools
 from re import sub
 from decimal import Decimal, InvalidOperation
 
@@ -133,6 +132,12 @@ CSV_FORMAT = [("Department", lambda s: s.department),
                lambda s: as_number(getattr(s, "2017_q3_digital_vol"))),
               ("July 2016 to June 2017: cost per transaction (£)",
                lambda s: as_number(getattr(s, "2017_q3_cpt"))),
+              ("October 2016 to September 2017: volume",
+               lambda s: as_number(getattr(s, "2017_q4_vol"))),
+              ("October 2016 to September 2017: digital volume",
+               lambda s: as_number(getattr(s, "2017_q4_digital_vol"))),
+              ("October 2016 to September 2017: cost per transaction (£)",
+               lambda s: as_number(getattr(s, "2017_q4_cpt"))),
               ("Service Type", lambda s: s.category),
               ("URL", lambda s: s.url),
               ("Description of service", lambda s: s.description),
@@ -142,10 +147,9 @@ CSV_FORMAT = [("Department", lambda s: s.department),
               ("Business model", lambda s: s.business_model)]
 
 
-def _create_parser():
+def create_parser():
     return argparse.ArgumentParser(
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        parents=[tools.argparser])
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
 
 def create_directory(output_dir):

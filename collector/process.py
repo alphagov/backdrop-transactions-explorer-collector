@@ -120,7 +120,10 @@ def setup_data_types():
                 '_start_at': datetime.datetime(2016, 07, 01, 0, 0),
                 '_end_at': datetime.datetime(2017, 07, 01, 0, 0),
             },
-
+            '2017-Q4': {
+                '_start_at': datetime.datetime(2016, 10, 01, 0, 0),
+                '_end_at': datetime.datetime(2017, 10, 01, 0, 0),
+            },
         },
         'year'
     )
@@ -218,6 +221,10 @@ def setup_data_types():
             'Apr - Jun 2017': {
                 '_start_at': datetime.datetime(2017, 04, 01, 0, 0),
                 '_end_at': datetime.datetime(2017, 07, 01, 0, 0),
+            },
+            'Jul - Sep 2017': {
+                '_start_at': datetime.datetime(2017, 07, 01, 0, 0),
+                '_end_at': datetime.datetime(2017, 10, 01, 0, 0),
             },
         },
         'quarter'

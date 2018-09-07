@@ -1,7 +1,7 @@
 # coding=utf8
 import unittest
 from hamcrest import *
-from collector.spreadsheet_to_dictionary import convert_to_records
+from collector.csv_to_dictionary import _convert_to_records
 import json
 
 
@@ -25,7 +25,7 @@ class TestListToRecordsConversion(unittest.TestCase):
              'Column3': 'Value33'}
         ]
 
-        assert_that(convert_to_records(data), is_(expected_records))
+        assert_that(_convert_to_records(data), is_(expected_records))
 
     def test_it_converts_an_integer_to_a_number(self):
         data = [
@@ -39,7 +39,7 @@ class TestListToRecordsConversion(unittest.TestCase):
             }
         ]
 
-        assert_that(convert_to_records(data), is_(expected_records))
+        assert_that(_convert_to_records(data), is_(expected_records))
 
     def test_it_converts_a_float_to_a_number(self):
         data = [
@@ -53,7 +53,7 @@ class TestListToRecordsConversion(unittest.TestCase):
             }
         ]
 
-        assert_that(convert_to_records(data), is_(expected_records))
+        assert_that(_convert_to_records(data), is_(expected_records))
 
     def test_it_handles_encoded_characters_correctly(self):
         data = [
@@ -63,4 +63,4 @@ class TestListToRecordsConversion(unittest.TestCase):
         expected_json = '[{"Heading with pound sign \u00a3": "text", ' \
                         '"Heading3": "more text", "Heading1": "\u00a34.50"}]'
 
-        assert_that(json.dumps(convert_to_records(data)), is_(expected_json))
+        assert_that(json.dumps(_convert_to_records(data)), is_(expected_json))

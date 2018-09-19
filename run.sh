@@ -31,7 +31,23 @@ pip install -r requirements_csv.txt
 pip install https://github.com/alphagov/backdropsend/tarball/0.0.1
 
 ./backdrop-transactions-explorer-collector tools/data/services.csv > /tmp/btec.json
-backdrop-send --url "https://${backdrop_fqdn}/data/transactional-services/summaries" --token "${backdrop_access_token}" --timeout 120 < /tmp/btec.json
+
+json_items="$(jq 'length' /tmp/btec.json)"
+items_per_post=1000
+
+for i in $(seq 0 $((( json_items / items_per_post )))); do
+  start_index="$((( i * items_per_post )))"
+  end_index="$((( start_index + items_per_post )))"
+
+  echo "Sending records ${start_index}-${end_index}..."
+  # this is because backdrop-send is weird
+  jq  ".[${start_index}:${end_index}]" /tmp/btec.json > /tmp/btec-current.json
+  backdrop-send \
+    --url "https://${backdrop_fqdn}/data/transactional-services/summaries" \
+    --token "${backdrop_access_token}" \
+    --timeout 120 \
+    < /tmp/btec-current.json
+done
 
 cd tools
 python create_transaction_volumes_csv.py

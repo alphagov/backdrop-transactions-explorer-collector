@@ -20,7 +20,7 @@ fi
 if [ ! -r "tools/data/services.csv" ]
 then
     echo "'tools/data/services.csv' file not present / not readable."
-    echo "Have you downloaded The Spreadsheet(TM)?"
+    echo "Have you downloaded The Spreadsheet™?"
     exit 3
 fi
 
